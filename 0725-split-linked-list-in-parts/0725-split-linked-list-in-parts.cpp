@@ -28,7 +28,7 @@ public:
         for(int i=0;i<k;i++){
             lst.push_back(curr);
             int splitSize = split+(i<rem ? 1 : 0);
-            for(int j=0;j<splitSize-1;j++){
+            for(int j=1;j<splitSize;j++){
                 curr = curr->next;
             }
             if(curr){
