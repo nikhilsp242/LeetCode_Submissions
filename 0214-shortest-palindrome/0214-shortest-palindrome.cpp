@@ -1,29 +1,29 @@
 class Solution {
 public:
     string shortestPalindrome(string s) {
-        if (s.empty()) return s;
-        int end = LongestPalindrome(s);
-        string p = s.substr(end+1);
+        if(s.size()<=1) return s;
+        string rev = s;
+        reverse(rev.begin(),rev.end());
+        if(s==rev) return s;
+        
+        int k = computeKMP(s + "#" + rev);
+        string p = s.substr(k);
         reverse(p.begin(),p.end());
 
         return p + s;
     }
 
 private:
-    int LongestPalindrome(string& s){
+    int computeKMP(const string& s){
         int n = s.size();
-        for(int i=n-1;i>=0;i--){
-            if(isPalindrome(s,0,i)) return i;
-        }
-        return 0;
-    }
+        vector<int> kmp(n,0);
 
-    bool isPalindrome(const string& s,int left,int right){
-        while(left<right){
-            if(s[left]!= s[right]) return false;
-            left++;
-            right--;
+        int j = 0;
+        for(int i=1;i<n;i++){
+            while(j>0 && s[i]!=s[j]) j = kmp[j-1];
+            if(s[i] == s[j]) j++;
+            kmp[i] = j;
         }
-        return true;
+        return kmp.back();
     }
 };
